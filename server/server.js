@@ -12,6 +12,7 @@ app.use(express.json({ limit: "10kb" }));
 app.use(cookieParser());
 
 app.use("/api/v1/auth", require("./routes/authRoute"));
+app.use("/api/v1/users", require("./routes/userRoute"));
 
 app.use("*", () => {
   throw new Error("Invalid route");

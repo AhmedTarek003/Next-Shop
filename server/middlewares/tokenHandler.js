@@ -26,4 +26,27 @@ const verifyAndRefreshToken = (req, res, next) => {
   }
 };
 
-module.exports = { verifyAndRefreshToken };
+const verifyTokenWithAdmin = (req, res, next) => {
+  verifyAndRefreshToken(req, res, () => {
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ msg: "access denied" });
+    }
+    next();
+  });
+};
+
+const verifyAuthorization = (req, res, next) => {
+  verifyAndRefreshToken(req, res, () => {
+    if (req.user.role === "admin" || req.params.id === req.user._id) {
+      next();
+    } else {
+      return res.status(403).json({ msg: "access denied" });
+    }
+  });
+};
+
+module.exports = {
+  verifyAndRefreshToken,
+  verifyTokenWithAdmin,
+  verifyAuthorization,
+};
