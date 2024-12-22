@@ -51,11 +51,13 @@ exports.updateUserCtrl = async (req, res) => {
     const updatedUser = await User.findByIdAndUpdate(
       id,
       {
-        name,
-        email,
-        address,
-        phoneNumber,
-        password: password ? hashPassword : password,
+        $set: {
+          name,
+          email,
+          address,
+          phoneNumber,
+          password: password ? hashPassword : password,
+        },
       },
       { new: true }
     );

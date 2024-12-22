@@ -7,6 +7,11 @@ const validatorHandler = (req, res, next) => {
     if (req.file) {
       fs.unlinkSync(req.file.path);
     }
+    if (req.files.length) {
+      for (const image of req.files) {
+        fs.unlinkSync(image.path);
+      }
+    }
     return res.status(400).json({ msg: result.array()[0].msg });
   }
   next();
