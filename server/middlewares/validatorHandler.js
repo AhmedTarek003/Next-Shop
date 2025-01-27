@@ -7,7 +7,7 @@ const validatorHandler = (req, res, next) => {
     if (req.file) {
       fs.unlinkSync(req.file.path);
     }
-    if (req.files.length) {
+    if (req.files && req.files.length) {
       for (const image of req.files) {
         fs.unlinkSync(image.path);
       }

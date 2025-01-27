@@ -14,6 +14,7 @@ app.use(cookieParser());
 app.use("/api/v1/auth", require("./routes/authRoute"));
 app.use("/api/v1/users", require("./routes/userRoute"));
 app.use("/api/v1/products", require("./routes/productRoute"));
+app.use("/api/v1/categories", require("./routes/categoryRoute"));
 
 app.use("*", () => {
   throw new Error("Invalid route");
