@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
 
 const userSchema = new mongoose.Schema(
   {
@@ -34,13 +33,13 @@ const userSchema = new mongoose.Schema(
     wishListProducts: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "productModel",
+        ref: "products",
       },
     ],
     ordersHistory: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "orderModel",
+        ref: "orders",
       },
     ],
     isVerifyed: {

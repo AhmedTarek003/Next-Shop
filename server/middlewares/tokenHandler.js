@@ -35,6 +35,15 @@ const verifyTokenWithAdmin = (req, res, next) => {
   });
 };
 
+const verifyTokenWithUser = (req, res, next) => {
+  verifyAndRefreshToken(req, res, () => {
+    if (req.user.role !== "user") {
+      return res.status(403).json({ msg: "access denied" });
+    }
+    next();
+  });
+};
+
 const verifyAuthorization = (req, res, next) => {
   verifyAndRefreshToken(req, res, () => {
     if (req.user.role === "admin" || req.params.id === req.user._id) {
@@ -48,5 +57,6 @@ const verifyAuthorization = (req, res, next) => {
 module.exports = {
   verifyAndRefreshToken,
   verifyTokenWithAdmin,
+  verifyTokenWithUser,
   verifyAuthorization,
 };
