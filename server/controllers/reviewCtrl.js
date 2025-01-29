@@ -62,7 +62,7 @@ exports.getReviewCtrl = async (req, res) => {
   const { _id } = req.user;
   try {
     const review = await Review.findById(id);
-    if (!review) return res.status(400).json({ msg: "review not found" });
+    if (!review) return res.status(404).json({ msg: "review not found" });
     if (_id !== review.user.toString())
       return res.status(403).json({ msg: "access denied" });
     res.status(200).json(review);
@@ -78,7 +78,7 @@ exports.updateReviewCtrl = async (req, res) => {
   const { rating, comment } = req.body;
   try {
     const review = await Review.findById(id);
-    if (!review) return res.status(400).json({ msg: "review not found" });
+    if (!review) return res.status(404).json({ msg: "review not found" });
     if (_id !== review.user.toString())
       return res.status(403).json({ msg: "access denied" });
     const product = await Product.findById(review.product);
@@ -117,7 +117,7 @@ exports.deleteReviewCtrl = async (req, res) => {
   const { _id, role } = req.user;
   try {
     const review = await Review.findById(id);
-    if (!review) return res.status(400).json({ msg: "review not found" });
+    if (!review) return res.status(404).json({ msg: "review not found" });
     if (role === "user" && _id !== review.user.toString())
       return res.status(403).json({ msg: "access denied" });
     await review.deleteOne();
