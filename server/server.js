@@ -17,6 +17,7 @@ app.use("/api/v1/products", require("./routes/productRoute"));
 app.use("/api/v1/categories", require("./routes/categoryRoute"));
 app.use("/api/v1/reviews", require("./routes/reviewRoute"));
 app.use("/api/v1/sliders", require("./routes/sliderRoute"));
+app.use("/api/v1/promocodes", require("./routes/promocodeRoute"));
 
 app.use("*", () => {
   throw new Error("Invalid route");
