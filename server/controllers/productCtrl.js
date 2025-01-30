@@ -14,6 +14,7 @@ exports.createProductCtrl = async (req, res) => {
     price,
     discount,
     color,
+    stock,
     sizes,
   } = req.body;
   try {
@@ -34,6 +35,7 @@ exports.createProductCtrl = async (req, res) => {
       discount,
       color,
       sizes,
+      stock,
       productImages: images,
     });
     await product.save();

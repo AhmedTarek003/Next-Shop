@@ -55,6 +55,7 @@ exports.createProductValidator = [
     .trim()
     .escape(),
   body("sizes")
+    .optional()
     .isArray({ min: 1 })
     .withMessage("sizes must be a non-empty array"),
   body("sizes.*.size")
@@ -63,6 +64,15 @@ exports.createProductValidator = [
   body("sizes.*.stock")
     .isInt({ min: 0 })
     .withMessage('Each size must have a "stock" field that is an integer >= 0'),
+  body("stock").custom((value, { req }) => {
+    if (req.body.sizes === undefined && (value === undefined || value < 0)) {
+      throw new Error(
+        "Stock is required and must be a positive number if no sizes are provided"
+      );
+    }
+    return true;
+  }),
+
   validatorHandler,
 ];
 
