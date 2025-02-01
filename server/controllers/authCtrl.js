@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 exports.createNewUserCrrl = async (req, res) => {
-  const { name, email, phoneNumber, password } = req.body;
+  const { name, email, phoneNumber, password, role } = req.body;
   try {
     const existUser = await User.findOne({ $or: [{ email }, { phoneNumber }] });
     if (existUser) return res.status(400).json({ msg: "User already exists" });
@@ -13,6 +13,7 @@ exports.createNewUserCrrl = async (req, res) => {
       name,
       email,
       phoneNumber,
+      role,
       password: hashPassword,
     });
     await newUser.save();
@@ -20,29 +21,6 @@ exports.createNewUserCrrl = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ msg: "error creating a new user" });
-  }
-};
-
-exports.createNewAdminCrrl = async (req, res) => {
-  const { name, email, phoneNumber, password } = req.body;
-  try {
-    const existUser = await User.findOne({ $or: [{ email }, { phoneNumber }] });
-    if (existUser) return res.status(400).json({ msg: "User already exists" });
-    // Hash Password
-    const hashPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({
-      name,
-      email,
-      phoneNumber,
-      password: hashPassword,
-      role: "admin",
-      isVerifyed: true,
-    });
-    await newUser.save();
-    res.status(201).json({ msg: "admin created successfully" });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ msg: "error creating a new admin" });
   }
 };
 
