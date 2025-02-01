@@ -43,9 +43,12 @@ exports.addReviewCtrl = async (req, res) => {
   }
 };
 
-exports.getAllReviewsCtrl = async (req, res) => {
+exports.getAllReviewsByProductIdCtrl = async (req, res) => {
+  const { id: productId } = req.params;
   try {
-    const reviews = await Review.find().populate("user", [
+    const product = await Product.findById(productId);
+    if (!product) return res.status(404).json({ msg: "Product not found" });
+    const reviews = await Review.find({ product: productId }).populate("user", [
       "_id",
       "name",
       "email",

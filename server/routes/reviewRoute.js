@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const {
   addReviewCtrl,
-  getAllReviewsCtrl,
+  getAllReviewsByProductIdCtrl,
   deleteReviewCtrl,
   getReviewCtrl,
   updateReviewCtrl,
@@ -16,10 +16,10 @@ const {
   updateReviewValidator,
 } = require("../utils/validators/reviewValidate");
 
+router.route("/").post(verifyTokenWithUser, addReviewValidator, addReviewCtrl);
 router
-  .route("/")
-  .post(verifyTokenWithUser, addReviewValidator, addReviewCtrl)
-  .get(getAllReviewsCtrl);
+  .route("/get_reviews_by_product/:id")
+  .get(validateObjId, getAllReviewsByProductIdCtrl);
 router
   .route("/:id")
   .get(verifyTokenWithUser, validateObjId, getReviewCtrl)
