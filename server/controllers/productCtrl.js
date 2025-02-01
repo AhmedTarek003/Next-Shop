@@ -1,4 +1,5 @@
 const Product = require("../models/productModel");
+const User = require("../models/userModel");
 const {
   uploadImageToCloudinary,
   deleteImageFromCloudinary,
@@ -151,5 +152,44 @@ exports.deleteProductCtrl = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ msg: "error delete product" });
+  }
+};
+
+exports.wishListProductsToggleCtrl = async (req, res) => {
+  const { id: productId } = req.params;
+  const { _id } = req.user;
+  try {
+    let user = await User.findById(_id);
+    if (!user) return res.status(404).json({ msg: "user not found" });
+    const product = await Product.findById(productId);
+    if (!product) return res.status(404).json({ msg: "product not found" });
+    const productsLiked = user.wishListProducts.find(
+      (p) => p.toString() === productId
+    );
+    if (productsLiked) {
+      user = await User.findByIdAndUpdate(
+        _id,
+        {
+          $pull: {
+            wishListProducts: productId,
+          },
+        },
+        { new: true }
+      ).select("-password");
+    } else {
+      user = await User.findByIdAndUpdate(
+        _id,
+        {
+          $push: {
+            wishListProducts: productId,
+          },
+        },
+        { new: true }
+      ).select("-password");
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ msg: "error to toggle wish list products" });
   }
 };

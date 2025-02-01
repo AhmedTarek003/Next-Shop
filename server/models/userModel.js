@@ -36,12 +36,6 @@ const userSchema = new mongoose.Schema(
         ref: "products",
       },
     ],
-    ordersHistory: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "orders",
-      },
-    ],
     isVerifyed: {
       type: Boolean,
       default: false,

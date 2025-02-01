@@ -5,8 +5,12 @@ const {
   getProductCtrl,
   updateProductCtrl,
   deleteProductCtrl,
+  wishListProductsToggleCtrl,
 } = require("../controllers/productCtrl");
-const { verifyTokenWithAdmin } = require("../middlewares/tokenHandler");
+const {
+  verifyTokenWithAdmin,
+  verifyTokenWithUser,
+} = require("../middlewares/tokenHandler");
 const uploadImage = require("../middlewares/uploadFile");
 const validateObjId = require("../middlewares/validateObjId");
 const {
@@ -23,6 +27,9 @@ router.post(
 );
 
 router.get("/", getAllProductsCtrl);
+router
+  .route("/toggle_product_likes/:id")
+  .put(verifyTokenWithUser, validateObjId, wishListProductsToggleCtrl);
 router
   .route("/:id")
   .get(validateObjId, getProductCtrl)
