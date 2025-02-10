@@ -1,4 +1,5 @@
 const Product = require("../models/productModel");
+const Review = require("../models/reviewModel");
 const User = require("../models/userModel");
 const {
   uploadImageToCloudinary,
@@ -145,6 +146,7 @@ exports.deleteProductCtrl = async (req, res) => {
         await deleteImageFromCloudinary(image.publicId);
       }
     }
+    await Review.deleteMany({ product: id });
     const deletedProduct = await Product.findByIdAndDelete(id);
     res
       .status(200)
